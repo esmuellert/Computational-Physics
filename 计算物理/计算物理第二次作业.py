@@ -1,7 +1,9 @@
+# In[1]
 import numpy as np
 import matplotlib.pyplot as plt
 import math
 
+# In[2]
 class canon(object):
     def __init__(self,v_0,theta,time_duration,time_step,g):
         self.v_x = v_0 * math.cos(theta)
