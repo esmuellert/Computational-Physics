@@ -72,13 +72,15 @@ canon_1.plot_show()
 # In[3]
 
 class canon_resistance(object):
-    def __init__(self,v_0,theta,time_duration,time_step,g,B2_sub_m):
-        self.theta_0 = theta
-        self.theta = theta*math.pi/180
+    def __init__(self,time_duration,time_step,g,B2_sub_m,distance,altitude):
+        self.theta_0 = 0
+        self.theta_1 = 0
+        self.distance = distance
+        self.altitude = altitude
         self.B2_sub_m = B2_sub_m
-        self.v_0 = v_0
-        self.v_x_0 = v_0 * math.cos(self.theta)
-        self.v_y_0 = v_0 * math.sin(self.theta)
+        self.v_0 = 0
+        self.v_x_0 = 0
+        self.v_y_0 = 0
         self.g = g
         self.t = np.arange(0,time_duration + time_step,time_step)
         self.x = np.arange(0,time_duration + time_step,time_step)
@@ -88,16 +90,30 @@ class canon_resistance(object):
         self.v_y[0] = self.v_y_0
         self.v_x[0] = self.v_x_0
         self.time_step = time_step
+        self.v = np.array([])
+        self.theta = np.array([])
 
     def calculate(self):
-        for i in range(self.t.shape[0]-1):
-            self.v_x[i+1] = self.v_x[i] - self.B2_sub_m*self.v_0*self.v_x[i]*self.time_step
-            self.x[i+1] = self.x[i] + self.v_x[i] * self.time_step
-            self.v_y[i+1] = self.v_y[i] - self.g * self.time_step - self.B2_sub_m*self.v_0*self.v_y[i]*self.time_step
-            self.y[i+1] = self.y[i] + self.v_y[i] * self.time_step
-
+        for self.theta_0 in range(20,70):
+            for self.v_0 in range(640,860):
+                self.theta_1 = self.theta_0*math.pi/180
+                self.v_x_0 = self.v_0 * math.cos(self.theta_1)
+                self.v_y_0 = self.v_0 * math.sin(self.theta_1)
+                self.v_y[0] = self.v_y_0
+                self.v_x[0] = self.v_x_0
+                for i in range(self.t.shape[0]-1):
+                    self.v_x[i+1] = self.v_x[i] - self.B2_sub_m*self.v_0*self.v_x[i]*self.time_step
+                    self.x[i+1] = self.x[i] + self.v_x[i] * self.time_step
+                    self.v_y[i+1] = self.v_y[i] - self.g * self.time_step - self.B2_sub_m*self.v_0*self.v_y[i]*self.time_step
+                    self.y[i+1] = self.y[i] + self.v_y[i] * self.time_step
+                    if self.x[i] == self.distance and self.y[i]==self.altitude :
+                        self.theta = np.append(self.theta,self.theta_0)
+                        self.v = np.append(self.v,self.v_0)
+                        print("ok")
+                    
+                        
     def plot(self):
-        plt.plot(self.x,self.y,label = str(self.theta_0))
+        plt.plot(self.theta,self.v)
    
     def plot_show(self):
         plt.title('with air drag')
@@ -106,12 +122,11 @@ class canon_resistance(object):
         plt.legend()
         plt.show()
 
-canon_2 = canon_resistance(v_0=700, theta=45, time_duration=100,time_step=1,g=9.8,B2_sub_m=0.00004)
+canon_2 = canon_resistance(time_duration=200,time_step=0.1,g=9.8,B2_sub_m=0.00004,distance=12400,altitude=5700)
 canon_2.calculate()
-canon_2.plot()
-canon_2.plot_show()
+# canon_2.plot()
+# canon_2.plot_show()
 
 # In[4]
-
+print(canon_2.theta)
 canon_2.x
-canon_2.y
