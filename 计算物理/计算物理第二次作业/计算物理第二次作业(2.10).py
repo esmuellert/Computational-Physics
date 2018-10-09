@@ -26,9 +26,9 @@ class canon_resistance(object):
         self.pos = [1,2]
     def calculate_with_drag(self):
         for i in range(self.t.shape[0]-1):
-            self.v_x[i+1] = self.v_x[i] - self.B2_sub_m*self.v_0*self.v_x[i]*self.time_step
+            self.v_x[i+1] = self.v_x[i] - self.B2_sub_m*math.sqrt(self.v_x[i]**2+self.v_y[i]**2)*self.v_x[i]*self.time_step
             self.x[i+1] = self.x[i] + self.v_x[i] * self.time_step
-            self.v_y[i+1] = self.v_y[i] - self.g * self.time_step - self.B2_sub_m*self.v_0*self.v_y[i]*self.time_step
+            self.v_y[i+1] = self.v_y[i] - self.g * self.time_step - self.B2_sub_m*math.sqrt(self.v_x[i]**2+self.v_y[i]**2)*self.v_y[i]*self.time_step
             self.y[i+1] = self.y[i] + self.v_y[i] * self.time_step
             if self.x[i]>=self.distance:
                 self.i = i
@@ -53,7 +53,7 @@ class canon_resistance(object):
 def find_v_min(altitude,theta,v_0):
     v_min = 90000
     result=[1,2]
-    for i in range(1000):
+    for i in range(2000):
         v_0 = v_0 + 0.1
         canon = canon_resistance(v_0=v_0, theta=theta)
         canon.calculate_with_drag()
@@ -69,8 +69,8 @@ def find_v_min(altitude,theta,v_0):
 def get_v_theta():
     v = []
     theta = []
-    for i in range(45,58):
-        result=find_v_min(altitude=7000,theta=i,v_0=650)
+    for i in range(49,62):
+        result=find_v_min(altitude=7000,theta=i,v_0=500)
         v.append(result[1])
         theta.append(result[0])
     return v,theta
