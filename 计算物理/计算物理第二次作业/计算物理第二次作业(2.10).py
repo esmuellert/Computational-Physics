@@ -3,11 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-
 # In[2]
-
 class canon_resistance(object):
-    def __init__(self,v_0,theta,time_duration = 100,time_step = 0.1,g = 9.8,B2_sub_m = 0.00004,distance = 11088):
+    def __init__(self,v_0,theta,time_duration = 100,time_step = 0.1,g = 9.8,B2_sub_m = 0.00004,distance = 11000):
         self.theta_0 = theta
         self.theta = theta*math.pi/180
         self.B2_sub_m = B2_sub_m
@@ -43,7 +41,7 @@ class canon_resistance(object):
         return self.pos
 
     def plot(self):
-        plt.plot(self.x,self.y,label = str(self.theta_0))
+        plt.plot(self.x[0:self.i],self.y[0:self.i],label = str(self.theta_0))
    
     def plot_show(self):
         plt.title('with air drag')
@@ -52,8 +50,9 @@ class canon_resistance(object):
         plt.legend()
         plt.show()
 
-def find_v_min(altitude):
-    v_0 ,v_min,theta = 650,900,45
+def find_v_min(altitude,theta,v_0):
+    v_min = 90000
+    result=[1,2]
     for i in range(1000):
         v_0 = v_0 + 0.1
         canon = canon_resistance(v_0=v_0, theta=theta)
@@ -62,6 +61,34 @@ def find_v_min(altitude):
         if (altitude >= pos[0] and altitude<= pos[1]) or (altitude >= pos[1] and altitude <= pos[0]):
             if v_0<v_min:
                 v_min = v_0    
-    return v_min
-a = find_v_min(altitude=7000)
-print(a)
+    print("角度是：{}度时，能到达定点的速度是{}".format(theta,v_min))
+    result[0] = theta
+    result[1] = v_min
+    return result
+
+def get_v_theta():
+    v = []
+    theta = []
+    for i in range(45,58):
+        result=find_v_min(altitude=7000,theta=i,v_0=650)
+        v.append(result[1])
+        theta.append(result[0])
+    return v,theta
+
+def plot_v_theta():
+    plt.plot(theta,v)
+    plt.title("the relation of v and theta of a fixed postion")
+    plt.xlabel("theta")
+    plt.ylabel("v/(m/s)")
+    plt.show()
+    for i in range(13):
+        canon_2 = canon_resistance(v_0=v[i],theta=theta[i])
+        canon_2.calculate_with_drag()
+        canon_2.plot()
+    canon_2.plot_show()
+
+# In[3]
+print("设定的点距离为11000米，高度为7000米")
+v,theta = get_v_theta()
+plot_v_theta()
+
