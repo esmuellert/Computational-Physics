@@ -5,7 +5,7 @@ import math
 
 # In[2]
 class canon_resistance(object):
-    def __init__(self,v_0,theta,time_duration = 100,time_step = 0.1,g = 9.8,B2_sub_m = 0.00004,distance = 11000):
+    def __init__(self,v_0,theta,time_duration = 100,time_step = 0.05,g = 9.8,B2_sub_m = 0.00004,distance = 11000):
         self.theta_0 = theta
         self.theta = theta*math.pi/180
         self.B2_sub_m = B2_sub_m
@@ -36,7 +36,7 @@ class canon_resistance(object):
                 
 
     def get_position(self):
-        self.pos[0] = self.y[self.i-1]
+        self.pos[0] = self.y[self.i+1]
         self.pos[1] = self.y[self.i]
         return self.pos
 
@@ -53,7 +53,7 @@ class canon_resistance(object):
 def find_v_min(altitude,theta,v_0):
     v_min = 90000
     result=[1,2]
-    for i in range(2000):
+    for i in range(1000):
         v_0 = v_0 + 0.1
         canon = canon_resistance(v_0=v_0, theta=theta)
         canon.calculate_with_drag()
@@ -69,8 +69,8 @@ def find_v_min(altitude,theta,v_0):
 def get_v_theta():
     v = []
     theta = []
-    for i in range(49,62):
-        result=find_v_min(altitude=7000,theta=i,v_0=500)
+    for i in range(50,63):
+        result=find_v_min(altitude=7000,theta=i,v_0=550)
         v.append(result[1])
         theta.append(result[0])
     return v,theta
