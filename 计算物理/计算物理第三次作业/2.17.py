@@ -57,7 +57,7 @@ for i in range(10):
 baseball.plot_show(name="the ralaion of trace and initial velocity")
 
 for i in range(10):
-    baseball = ball_1(v_0=40,theta_0=2*i,omega=10,time_duration=1)
+    baseball = ball_1(v_0=40,theta_0=2*i,omega=100,time_duration=1)
     baseball.calculate_with_drag()
     baseball.plot()
 baseball.plot_show(name="the ralaion of trace and initial angular orientation")
