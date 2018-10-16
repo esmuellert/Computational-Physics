@@ -22,10 +22,9 @@ class ball_1(object):
         self.v_x[0] = self.v_0
         self.theta[0] = theta_0
         self.time_step = time_step
-        self.i = 0
     def calculate_with_drag(self):
         for i in range(self.t.shape[0]-1):
-            self.theta[i+1] = self.omega*(i+1)*self.time_step
+            self.theta[i+1] = self.theta[0] + self.omega*(i+1)*self.time_step
             self.v_x[i+1] = self.v_x[i] - self.B2_sub_m*math.sqrt(self.v_x[i]**2+self.v_y[i]**2+self.v_z[i]**2)*self.v_x[i]*self.time_step
             self.x[i+1] = self.x[i] + self.v_x[i] * self.time_step
             self.v_y[i+1] = self.v_y[i] - self.g*self.time_step
@@ -62,3 +61,5 @@ for i in range(10):
     baseball.plot()
 baseball.plot_show(name="the ralaion of trace and initial angular orientation")
 
+# In[4]
+baseball.theta
