@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import time
+from multiprocessing.dummy import Pool
 
 class pendulum(object):
     def __init__(self,angle_0, omega_0, F_D,time_step=0.04, g=9.8,l=9.8,q=0.5,m=0.1,omega_D=2/3):
@@ -44,27 +45,64 @@ class pendulum(object):
             self.angle1[i+1] = self.angle[i+1]
            
 
+
+def calculate1(i):
+    pendulum1 = pendulum(1.69,0,i)
+    pendulum1.calculate()
+    if pendulum1.angle1[-1]<0:
+        pendulum1.angle1[-1] = 4+pendulum1.angle1[-1]
+    return pendulum1.angle1[-1]
+
+def calculate2(i):
+    pendulum1 = pendulum(1.52,0,i)
+    pendulum1.calculate()
+    if pendulum1.angle1[-1]<0:
+        pendulum1.angle1[-1] = 4+pendulum1.angle1[-1]
+    return pendulum1.angle1[-1]
+
+def calculate3(i):
+    pendulum1 = pendulum(2.72,0,i)
+    pendulum1.calculate()
+    if pendulum1.angle1[-1]<0:
+        pendulum1.angle1[-1] = 4+pendulum1.angle1[-1]
+    return pendulum1.angle1[-1]
+
+def calculate4(i):
+    pendulum1 = pendulum(2.82,0,i)
+    pendulum1.calculate()
+    if pendulum1.angle1[-1]<0:
+        pendulum1.angle1[-1] = 4+pendulum1.angle1[-1]
+    return pendulum1.angle1[-1]
+
+
+
 def calculate_plot(step):
     F_D = np.arange(1.35,1.5,step)
-    theta = np.array([])
-    for j in [1.69,2.82,2.72,1.52]:
-        for i in F_D:
-            pendulum1 = pendulum(j,0,i)
-            pendulum1.calculate()
-            if pendulum1.angle1[-1]<0:
-                pendulum1.angle1[-1] = 4+pendulum1.angle1[-1]
-            theta = np.append(theta,pendulum1.angle1[-1])
-        plt.scatter(F_D,theta,s=8,color='blue')
-
-        theta = np.array([])
-    
+    p1 = Pool(processes=4)
+    theta = p1.map(calculate1,F_D)
+    plt.scatter(F_D,theta,s=8,color='blue')
+    p2 = Pool(processes=4)
+    theta = p2.map(calculate2,F_D)
+    plt.scatter(F_D,theta,s=8,color='blue')
+    p3 = Pool(processes=4)
+    theta = p3.map(calculate3,F_D)
+    plt.scatter(F_D,theta,s=8,color='blue')
+    p4 = Pool(processes=4)      
+    theta = p4.map(calculate4,F_D)
+    plt.scatter(F_D,theta,s=8,color='blue')    
     
     plt.xlabel("F_D")
     plt.ylabel("theta")
     # plt.show()
-# In[2]
 
-start = time.time()
-calculate_plot(0.001)
-end = time.time()
-print(end-start)
+# In[2]
+if __name__ == '__main__':
+
+    start = time.time()
+    calculate_plot(0.001)
+    end = time.time()
+    print(end-start)
+
+
+
+
