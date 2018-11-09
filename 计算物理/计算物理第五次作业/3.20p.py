@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import time
-from multiprocessing.dummy import Pool
+from multiprocessing import Pool
 
 class pendulum(object):
     def __init__(self,angle_0, omega_0, F_D,time_step=0.04, g=9.8,l=9.8,q=0.5,m=0.1,omega_D=2/3):
@@ -78,28 +78,31 @@ def calculate4(i):
 
 def calculate_plot(step):
     F_D = np.arange(1.35,1.5,step)
-    p1 = Pool()
-    theta = p1.map(calculate1,F_D)
-    plt.scatter(F_D,theta,s=8,color='blue')
-    p2 = Pool()
-    theta = p2.map(calculate2,F_D)
-    plt.scatter(F_D,theta,s=8,color='blue')
-    p3 = Pool()
-    theta = p3.map(calculate3,F_D)
-    plt.scatter(F_D,theta,s=8,color='blue')
-    p4 = Pool()      
-    theta = p4.map(calculate4,F_D)
-    plt.scatter(F_D,theta,s=8,color='blue')    
+    p = Pool()
+    theta1 = p.map(calculate1,F_D)
+    
+    
+    theta2 = p.map(calculate2,F_D)
+  
+    
+    theta3 = p.map(calculate3,F_D)
+
+        
+    theta4 = p.map(calculate4,F_D)
+    plt.scatter(F_D,theta1,s=6,color='blue')    
+    plt.scatter(F_D,theta2,s=6,color='blue')
+    plt.scatter(F_D,theta3,s=6,color='blue')
+    plt.scatter(F_D,theta4,s=6,color='blue')
     
     plt.xlabel("F_D")
     plt.ylabel("theta")
-    # plt.show()
+    plt.savefig("example.jpg")
 
 # In[2]
 if __name__ == '__main__':
 
     start = time.time()
-    calculate_plot(0.001)
+    calculate_plot(0.0001)
     end = time.time()
     print(end-start)
 
