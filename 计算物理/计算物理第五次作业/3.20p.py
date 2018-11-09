@@ -78,16 +78,16 @@ def calculate4(i):
 
 def calculate_plot(step):
     F_D = np.arange(1.35,1.5,step)
-    p1 = Pool(processes=400)
+    p1 = Pool()
     theta = p1.map(calculate1,F_D)
     plt.scatter(F_D,theta,s=8,color='blue')
-    p2 = Pool(processes=400)
+    p2 = Pool()
     theta = p2.map(calculate2,F_D)
     plt.scatter(F_D,theta,s=8,color='blue')
-    p3 = Pool(processes=400)
+    p3 = Pool()
     theta = p3.map(calculate3,F_D)
     plt.scatter(F_D,theta,s=8,color='blue')
-    p4 = Pool(processes=400)      
+    p4 = Pool()      
     theta = p4.map(calculate4,F_D)
     plt.scatter(F_D,theta,s=8,color='blue')    
     
