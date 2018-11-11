@@ -50,28 +50,28 @@ def calculate1(i):
     pendulum1 = pendulum(1.69,0,i)
     pendulum1.calculate()
     if pendulum1.angle1[-1]<0:
-        pendulum1.angle1[-1] = 4+pendulum1.angle1[-1]
+        pendulum1.angle1[-1] = 3.8+pendulum1.angle1[-1]
     return pendulum1.angle1[-1]
 
 def calculate2(i):
     pendulum1 = pendulum(1.52,0,i)
     pendulum1.calculate()
     if pendulum1.angle1[-1]<0:
-        pendulum1.angle1[-1] = 4+pendulum1.angle1[-1]
+        pendulum1.angle1[-1] = 3.8+pendulum1.angle1[-1]
     return pendulum1.angle1[-1]
 
 def calculate3(i):
     pendulum1 = pendulum(2.72,0,i)
     pendulum1.calculate()
     if pendulum1.angle1[-1]<0:
-        pendulum1.angle1[-1] = 4+pendulum1.angle1[-1]
+        pendulum1.angle1[-1] = 3.8+pendulum1.angle1[-1]
     return pendulum1.angle1[-1]
 
 def calculate4(i):
     pendulum1 = pendulum(2.82,0,i)
     pendulum1.calculate()
     if pendulum1.angle1[-1]<0:
-        pendulum1.angle1[-1] = 4+pendulum1.angle1[-1]
+        pendulum1.angle1[-1] = 3.8+pendulum1.angle1[-1]
     return pendulum1.angle1[-1]
 
 
@@ -89,10 +89,10 @@ def calculate_plot(step):
 
         
     theta4 = p.map(calculate4,F_D)
-    plt.scatter(F_D,theta1,s=6,color='blue')    
-    plt.scatter(F_D,theta2,s=6,color='blue')
-    plt.scatter(F_D,theta3,s=6,color='blue')
-    plt.scatter(F_D,theta4,s=6,color='blue')
+    plt.scatter(F_D,theta1,s=4,color='blue')    
+    plt.scatter(F_D,theta2,s=4,color='blue')
+    plt.scatter(F_D,theta3,s=4,color='blue')
+    plt.scatter(F_D,theta4,s=4,color='blue')
     
     plt.xlabel("F_D")
     plt.ylabel("theta")
