@@ -1,4 +1,4 @@
 {
-    "python.pythonPath": "C:\\Users\\myn50\\Anaconda3\\python.exe",
+    "python.pythonPath": "/anaconda3/envs/mpi/bin/python",
     "python.linting.pylintEnabled": true
 }

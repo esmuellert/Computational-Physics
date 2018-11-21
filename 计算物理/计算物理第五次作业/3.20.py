@@ -4,7 +4,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import time
-
+# from mpi4py import MPI
+# comm = MPI.COMM_WORLD
+# size = comm.Get_size()
+# rank = comm.Get_rank()
 class pendulum(object):
     def __init__(self,angle_0, omega_0, F_D,time_step=0.04, g=9.8,l=9.8,q=0.5,m=0.1,omega_D=2/3):
         self.g = g
@@ -65,6 +68,6 @@ def calculate_plot(step):
 # In[2]
 
 start = time.time()
-calculate_plot(0.001)
+calculate_plot(0.01)
 end = time.time()
 print(end-start)

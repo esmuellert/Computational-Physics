@@ -86,11 +86,12 @@ class billiard(object):
         plt.ylabel("v_x")
         plt.title("Phase-space plot")
         plt.show()       
-
+start = time.time()
 billiard1 = billiard(theta_0=1,x_0=1.54,y_0=0.86,v_0=8)
 billiard1.calculate()
 billiard1.plot_x_y()
 billiard1.plot_phase()
-
+end = time.time()
+print(end-start)
 # In[2]
 
