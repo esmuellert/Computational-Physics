@@ -25,6 +25,7 @@ class ising_model(object):
         s_r = np.delete(s_r,0,axis=1)        
 
         first = (np.sum(S*s_u)+np.sum(S*s_d)+np.sum(S*s_l)+np.sum(S*s_r))
+        second = -np.sum(S)
 
         hamilton = first
         return hamilton
@@ -60,7 +61,6 @@ class ising_model(object):
 
 
     def plot(self):
-        plt.figure(figsize = (10, 10))
         plt.plot(range(self.iter+1),self.mag)
         plt.show()                        
 
@@ -72,9 +72,10 @@ class ising_model(object):
 
 
 # In[2]
-ising=ising_model(T=1,iteration=1000)
+ising=ising_model(T=2,iteration=1000)
 ising.interation()
 ising.plot()
-
+ising.mag
 # In[3]
-ising.S
+import random
+ising.calculate_hamilton(3*np.ones((10,10)))
