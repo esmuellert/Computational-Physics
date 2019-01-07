@@ -3,6 +3,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import random
+from multiprocessing import Pool
+import time
 
 class ising_model(object):
     def __init__(self,T,iteration):
@@ -79,50 +81,61 @@ class ising_model(object):
             
 
 
-# In[2]
-for t in [1.2,2.1,2.269,4]:
-    ising=ising_model(T=t,iteration=100000)
-    ising.interation()
-    ising.plot_t()
-    plt.savefig("T="+str(t)+".jpg")
-
+# # In[2]
+# for t in [1.2,2.1,2.269,4]:
+#     ising=ising_model(T=t,iteration=100000)
+#     ising.interation()
+#     ising.plot_t()
+#     plt.savefig("T="+str(t)+".jpg")
 
 
 
 # In[3]
-mean_mag = np.array([])
-temperature=np.arange(0.1,5,0.1)
-for t in temperature:
-        ising=ising_model(T=t,iteration=100000)
-        ising.interation()
-        mean_mag = np.append(mean_mag,np.mean(abs(ising.mag[30000:])))
+def calculate_mag(t):
+    ising=ising_model(T=t,iteration=100000)
+    ising.interation()
+    return np.mean(ising.mag)
 
-def plot():
+
+def plot_mag():
     plt.scatter(temperature,mean_mag)
     plt.xlabel("temperature")
-    plt.title("Mean Magetization-Temperature Phase Graph")
-    plt.ylabel("Mean Magetization")
-    plt.show()
-    plt.savefig("Mean Magetization-Temperature Phase Graph.jpg")
+    plt.title("Mean Magnetization-Temperature Phase Graph")
+    plt.ylabel("Mean Magnetization")
+    plt.savefig("Mean Magnetization-Temperature Phase Graph.png")
+    #plt.show()
 
-plot()
+if __name__ == '__main__':
+    t1 = time.time()
+    temperature=np.arange(0.1,5,0.1)
+    pool=Pool()
+    mean_mag = pool.map(calculate_mag, temperature)
+    plot_mag()
+    t2 = time.time()
+    print("time="+str(t2-t1)+"ms")
 
 
 # In[4]
-mean_energy = np.array([])
-temperature=np.arange(0.1,5,0.1)
-for t in temperature:
-        ising=ising_model(T=t,iteration=10000)
-        ising.interation()
-        mean_energy = np.append(mean_energy,np.mean(ising.hamilton))
 
-def plot():
-    plt.scatter(temperature,mean_energy)
-    plt.xlabel("temperature")
-    plt.title("Mean Energy-Temperature Phase Graph")
-    plt.ylabel("Mean Energy")
-    plt.savefig("Mean Energy-Temperature Phase Graph.jpg")
-    plt.show()
+# def calculate_energy(t):
+#     ising=ising_model(T=t,iteration=10000)
+#     ising.interation()
+#     return np.mean(ising.hamilton)
 
 
-plot()
+# def plot_energy():
+#     plt.scatter(temperature,mean_energy)
+#     plt.xlabel("temperature")
+#     plt.title("Mean Energy-Temperature Phase Graph")
+#     plt.ylabel("Mean Energy")
+#     plt.savefig("Mean Energy-Temperature Phase Graph.jpg")
+#     #plt.show()
+
+# if __name__ == '__main__':
+#     t1 = time.time()
+#     temperature=np.arange(0.1,5,0.1)
+#     pool=Pool()
+#     mean_energy = pool.map(calculate_energy, temperature)
+#     plot_energy()
+#     t2 = time.time()
+#     print("time="+str(t2-t1)+"ms")
